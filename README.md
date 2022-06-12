@@ -2,9 +2,7 @@
 
 This is the repository for below two websites:
 - https://learn-code.my
-- https://learn2code.innato.io
-
-Both websites are hosted in `ubuntu-nanode-sg`.
+- https://innato.io
 
 To update local changes to the remote web server, just log in to the server and go to the `/var/www/learncode` and run `git pull`.
 
