@@ -1,67 +1,299 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
+<!doctype html>
+<html lang="en-us">
+  <head>
+	<meta name="generator" content="Hugo 0.161.1"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LEE CHOON SIONG</title>
+    <meta name="description" content="Blog" />
 
-<head>
-  <meta charset="utf-8">
-  <title>Lee Choon Siong</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather&family=Montserrat:wght@400;700&family=Sacramento&display=swap" rel="stylesheet">
-  <link rel="icon" href="favicon.ico">
-  <script src="https://kit.fontawesome.com/f986564979.js" crossorigin="anonymous"></script>
-</head>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;600&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 
-<body>
-  <div class="top-container">
-<!--     <img class="top-cloud" src="images/cloud.png" alt="cloud image">-->
-    <h1>I'm Choon Siong.</h1>
-    <h2>a <span class="pro">pro</span>grammer.</h2>
-    <!-- <img class="bottom-cloud" src="images/cloud.png" alt="cloud image"> -->
-    <!-- <img src="images/mountain.png" alt="mountain image"> -->
-  </div>
-  <div class="middle-container">
-    <div class="profile">
-      <img src="images/lcs2.png" alt="profile image">
-      <h2>Hello.</h2>
-      <p class="intro">I have been working in IT and telecommunication software industry for more than 15 years with multiple roles - system administrator, project engineer, project manager and software developer.</p>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Inter', sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        color: #4a4b4f;
+        background-color: #fbfbfb;
+      }
+
+      .container {
+        max-width: 580px;  
+        margin: 0 auto;
+        padding: 60px 20px;
+      }
+
+      h1 {
+        font-family: 'Source Serif Pro', serif;
+        font-size: 24px;
+        font-weight: 600;
+        margin: 0 0 40px 0;
+        color: #4a4b4f;
+      }
+
+      p {
+        margin: 0 0 20px 0;
+        line-height: 1.7;
+      }
+
+      a {
+        color: #8f6a60;
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 2px;
+      }
+
+      a:hover {
+        color: #6b5046;
+      }
+
+      .section {
+        margin-bottom: 40px;
+      }
+
+      .works-title {
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #4a4b4f;
+      }
+
+      .work-item {
+        margin-bottom: 12px;
+        line-height: 1.6;
+      }
+
+      .work-link {
+        display: block;
+        text-decoration: none;
+        color: #4a4b4f;
+      }
+
+      .work-link:hover {
+        opacity: 0.8;
+      }
+
+      .work-title {
+        font-weight: 500;
+      }
+
+      .publication {
+        color: #8f6a60;
+      }
+
+      .year {
+        color: #9d9d9d;
+      }
+
+      .description {
+        color: #9d9d9d;
+        font-style: italic;
+        margin-top: 4px;
+      }
+
+      .contact {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 1px solid #e5e5e5;
+      }
+
+      .footer-image {
+        margin-top: 30px;
+        text-align: left;
+      }
+
+      .footer-image img {
+        width: 60px;
+        height: auto;
+        opacity: 0.7;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 40px 20px;
+        }
+
+        h1 {
+          font-size: 22px;
+        }
+
+        body {
+          font-size: 15px;
+        }
+      }
+      
+       
+      pre {
+        background-color: #f5f5f5;
+        padding: 16px;
+        border-radius: 4px;
+        overflow-x: auto;
+        margin: 20px 0;
+      }
+      
+      code {
+        font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      
+      pre code {
+        display: block;
+        white-space: pre !important;
+        word-wrap: normal !important;
+        word-break: normal;
+        overflow-x: auto;
+      }
+      
+       
+      p code, li code, h1 code, h2 code, h3 code {
+        background-color: #f5f5f5;
+        padding: 3px 5px;
+        border-radius: 3px;
+        font-size: 0.9em;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+
+       
+      .post-content mjx-container[display="true"] {
+        display: block;
+        text-align: center;
+        margin: 1em 0;
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        box-sizing: border-box;
+        padding-top: 1em;
+        padding-bottom: 1em;
+        min-height: unset;
+      }
+       
+      .post-content mjx-container[display="true"] mjx-math {
+        min-width: 0 !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+        white-space: pre;
+        box-sizing: border-box;
+        min-height: unset;
+      }
+       
+      .post-content {
+        overflow-x: auto;
+        overflow-y: visible;
+      }
+      
+       
+      .post-content img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 100%;
+        height: auto;
+        border-radius: 4px;
+        margin-top: 1.5em;
+        margin-bottom: 1.5em;
+      }
+      
+       
+      .post-content img + em {
+        display: block;
+        text-align: center;
+        font-size: 0.9em;
+        color: #777;
+        margin-top: -1em;
+        margin-bottom: 1.5em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      
+<style>
+  .page-container {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;  
+    max-width: 580px;  
+    padding: 0 20px;  
+  }
+  
+  .content-column {
+    width: 100%;
+    box-sizing: border-box;
+    min-width: auto;
+    max-width: 580px;  
+    font-size: 15px;
+  }
+  
+  @media (max-width: 992px) {
+    .page-container {
+      flex-direction: column;
+    }
+    
+    .content-column {
+      width: 100%;
+      padding-right: 0;
+      min-width: auto;  
+      max-width: 580px;  
+      margin: 0 auto;  
+    }
+  }
+</style>
+
+<div class="page-container">
+  <div class="content-column">
+    <div class="section">
+      
+        <p>Hello, World! 😎</p>
+
+      
+    </div>    
+    
+    <div class="section">
+      <div class="works-title">Posts</div>
+
+      
+      <div class="work-item">
+        <a href="/posts/hello-world/" class="work-link">
+          <span class="work-title">Hello World</span> 
+          <span class="year">(2026)</span>
+          <div class="description">Add a brief description here.</div>
+        </a>
+      </div>
+      
     </div>
-    <hr>
-    <div class="skills">
-      <h2>Something I do.</h2>
-      <div class="skill-row">
-        <img class="skill-image-1" src="images/mobile.png" alt="skill image">
-        <h3>Mobile Application Design & Development</h3>
-        <p>Specialized in design and develop fully-featured, state of the art and great looking mobile application running on iOS or Android. Provide end-to-end solution from initial design, wireframe, prototype, implementation to final product launch the public. Take advantage of the latest development in mobile technology and exploit the potential within it.</p>
-      </div>
-      <div class="skill-row">
-        <img class="skill-image-2" src="images/web.png" alt="skill image">
-        <h3>Website / Web Application Development</h3>
-        <p>Full stack web site development with deep understanding of backend and frontend technologies. Familiar with MySQL and NoSQL databases, experienced in PHP, Python, JavaScript, HTML and CSS programming. Pay attention to the usability and friendliness of the website and balance with great looking and simple UI.</p>
-      </div>
-      <div class="skill-row">
-        <img class="skill-image-3" src="images/enterprise.png" alt="skill image">
-        <h3>Business & Enterprise Application</h3>
-        <p>Experienced in Java business application development, refactor and new features add-on for existing product. Automation with shell scripting and languages using Python and Ruby. Implement mediated solution for integrating different products. Services availability with monitoring tools such as Nagios and Cacti.</p>
-      </div>
-      <div class="skill-row">
-        <img class="skill-image-4" src="images/consultant.png" alt="skill image">
-        <h3>Digital Services Consultancy</h3>
-        <p>Familiar with various IT services implementation, deployment and operation, such as cloud computing or storage using Amazon AWS, Heroku, web and email hosting with external service providers. In-house Linux server and services implementation and deployment using Red Hat Enterprise Linux. Firewall and networking configuration using OpenBSD.</p>
-      </div>
-    </div>
-    <hr>
-    <div class="contact-me">
-      <h2>Get In Touch</h2>
-      <h3>Mobile app? Awesome website? New Friendship?</h3>
-      <p class="contact-message">Contact me if you need someone to help on your mobile application or website or you just have something to share with me.</p>
-      <a class="contact-button" href="mailto:cv@choonsiong.com"><i class="far fa-envelope"></i> MESSAGE ME</a>
+
+    <div class="contact">
+         
     </div>
   </div>
+</div>
 
+    </div>
+    
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 
-  <div class="bottom-container">
-    <p class="copyright">© 2026 Lee Choon Siong</p>
-  </div>
-
-</body>
-
+  </body>
 </html>
