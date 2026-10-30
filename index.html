@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>app.choonsiong.com — Apps &amp; experiments by Lee Choon Siong</title>
+    <meta name="description" content="A small collection of web apps and experiments built by Lee Choon Siong." />
+    <meta name="theme-color" content="#07090f" />
+    <meta name="color-scheme" content="dark" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="app.choonsiong.com" />
+    <meta property="og:description" content="Apps &amp; experiments by Lee Choon Siong." />
+    <meta property="og:url" content="https://app.choonsiong.com/" />
+
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2307090f'/%3E%3Cpath d='M32 10 51 21v22L32 54 13 43V21z' fill='none' stroke='%235eead4' stroke-width='3'/%3E%3Cpath d='M32 10v44M13 21l38 22M51 21 13 43' stroke='%23a78bfa' stroke-width='1.5' opacity='.7'/%3E%3C/svg%3E" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- three.js is loaded as an ES module from jsDelivr. GitHub Pages is a static host, so this works with no build step. -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js"
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+    <canvas id="scene" aria-hidden="true"></canvas>
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="nav">
+      <a class="brand" href="/" aria-label="app.choonsiong.com home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text">app.choonsiong</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#apps">Apps</a>
+        <a href="#about">About</a>
+        <a href="https://github.com/choonsiong" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- ===================== HERO ===================== -->
+      <section class="hero" id="top">
+        <p class="eyebrow reveal"><span class="dot"></span>app.choonsiong.com</p>
+        <h1 class="reveal">
+          Small apps.<br />
+          <span class="gradient-text">Built with care.</span>
+        </h1>
+        <p class="lede reveal">
+          A home for the web apps, tools and experiments I build and ship.
+          Fast, focused, and free to use.
+        </p>
+        <div class="cta-row reveal">
+          <a class="btn btn-primary" href="#apps">Explore apps</a>
+          <a class="btn btn-ghost" href="https://github.com/choonsiong" target="_blank" rel="noopener">
+            View source
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </a>
+        </div>
+        <a class="scroll-hint" href="#apps" aria-label="Scroll to apps">
+          <span></span>
+        </a>
+      </section>
+
+      <!-- ===================== APPS ===================== -->
+      <section class="section" id="apps">
+        <div class="section-head reveal">
+          <p class="kicker">01 — Apps</p>
+          <h2>What's live</h2>
+          <p class="sub">Each app is a single page, works offline where it can, and respects your data.</p>
+        </div>
+
+        <div class="grid">
+          <!-- Edit, duplicate or remove these cards. -->
+          <article class="card reveal">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M8 10h8M8 14h5"/></svg>
+            </div>
+            <span class="pill pill-live">Live</span>
+            <h3>Notes</h3>
+            <p>A distraction-free scratchpad that saves to your browser. Markdown in, clean text out.</p>
+            <a class="card-link" href="#" aria-label="Open Notes">Open <span aria-hidden="true">→</span></a>
+          </article>
+
+          <article class="card reveal">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>
+            </div>
+            <span class="pill pill-live">Live</span>
+            <h3>Focus Timer</h3>
+            <p>Pomodoro-style sessions with gentle sounds and a daily streak you'll actually want to keep.</p>
+            <a class="card-link" href="#" aria-label="Open Focus Timer">Open <span aria-hidden="true">→</span></a>
+          </article>
+
+          <article class="card reveal">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 17l6-6 4 4 6-6"/><path d="M14 9h6v6"/></svg>
+            </div>
+            <span class="pill pill-soon">Coming soon</span>
+            <h3>Playground</h3>
+            <p>Interactive demos and visual experiments, mostly built with WebGL and three.js.</p>
+            <a class="card-link" href="#" aria-label="Playground coming soon">Notify me <span aria-hidden="true">→</span></a>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===================== ABOUT ===================== -->
+      <section class="section" id="about">
+        <div class="about">
+          <div class="about-text reveal">
+            <p class="kicker">02 — About</p>
+            <h2>Made by Lee Choon Siong</h2>
+            <p>
+              I'm a software engineer who likes building small, well-crafted tools.
+              Everything here is open source, runs entirely in your browser, and is
+              hosted on GitHub Pages.
+            </p>
+            <p>
+              Writing and longer-form notes live at
+              <a href="https://choonsiong.com" target="_blank" rel="noopener">choonsiong.com</a>.
+            </p>
+          </div>
+
+          <ul class="stack reveal" aria-label="Technology used on this site">
+            <li><span class="stack-k">Rendering</span><span class="stack-v">three.js r187</span></li>
+            <li><span class="stack-k">Hosting</span><span class="stack-v">GitHub Pages</span></li>
+            <li><span class="stack-k">Build step</span><span class="stack-v">None</span></li>
+            <li><span class="stack-k">Tracking</span><span class="stack-v">None</span></li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>&copy; <span id="year">2026</span> Lee Choon Siong</p>
+      <nav aria-label="Footer">
+        <a href="https://choonsiong.com" target="_blank" rel="noopener">choonsiong.com</a>
+        <a href="https://github.com/choonsiong" target="_blank" rel="noopener">GitHub</a>
+        <a href="#top">Back to top</a>
+      </nav>
+    </footer>
+
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
