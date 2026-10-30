@@ -270,7 +270,7 @@ h1 {
 /* ---------- Cards ---------- */
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 18px;
 }
 
@@ -404,6 +404,7 @@ h1 {
 .reveal.in { opacity: 1; transform: none; }
 .grid .card:nth-child(2) { transition-delay: 0.08s; }
 .grid .card:nth-child(3) { transition-delay: 0.16s; }
+.grid .card:nth-child(4) { transition-delay: 0.24s; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
