@@ -5,6 +5,10 @@
  * Scene: a slowly rotating wireframe icosahedron with a glassy core,
  * two orbiting rings, and a soft particle field. The camera drifts with
  * the cursor and eases backward as you scroll.
+ *
+ * The Stack section has a second, smaller scene of its own: a ring split
+ * into one segment per language, drawn on its own canvas (mountStackRing,
+ * at the bottom of this file).
  */
 import * as THREE from "three";
 
@@ -34,12 +38,26 @@ if ("IntersectionObserver" in window) {
   revealEls.forEach((el) => el.classList.add("in"));
 }
 
-// GitHub contribution calendar, from contributions.json on this repo's
-// `data` branch (written daily by .github/workflows/contributions.yml).
-// Weeks run Sunday to Saturday, as on GitHub; the first week is padded so
-// every column has seven rows.
-const CONTRIBUTIONS_URL = "https://raw.githubusercontent.com/choonsiong/choonsiong.github.io/data/contributions.json";
+// Data files written daily by .github/workflows/data.yml to this repo's
+// `data` branch. Served locally (python3 -m http.server) the page tries
+// the git-ignored local copies first, so the scripts' output can be
+// previewed before the workflow publishes it.
+const DATA_BRANCH = "https://raw.githubusercontent.com/choonsiong/choonsiong.github.io/data";
+const LOCAL = ["localhost", "127.0.0.1", "[::1]"].includes(location.hostname);
 
+async function fetchData(name) {
+  if (LOCAL) {
+    const local = await fetch(`./${name}`).catch(() => null);
+    if (local?.ok) return local.json();
+  }
+  const res = await fetch(`${DATA_BRANCH}/${name}`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+// GitHub contribution calendar, from contributions.json. Weeks run Sunday
+// to Saturday, as on GitHub; the first week is padded so every column has
+// seven rows.
 async function loadContributions() {
   const body = document.getElementById("activity-body");
   const status = document.getElementById("activity-status");
@@ -47,9 +65,7 @@ async function loadContributions() {
 
   let data;
   try {
-    const res = await fetch(CONTRIBUTIONS_URL);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    data = await res.json();
+    data = await fetchData("contributions.json");
     if (!Array.isArray(data.days) || data.days.length === 0) throw new Error("no days");
   } catch (err) {
     console.warn("Contribution calendar unavailable:", err);
@@ -130,6 +146,141 @@ async function loadContributions() {
   body.scrollLeft = body.scrollWidth; // newest weeks first on narrow screens
 }
 loadContributions();
+
+// Languages across the repositories, from languages.json: the largest
+// eight get a colour each (--lang-1 … --lang-8, in that order), the rest
+// are folded into "Other". The list is the full reading; the ring in
+// mountStackRing() follows the same selection through `stack`.
+const STACK_SLOTS = 8;
+const cssVar = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+const fmtBytes = (n) => (n >= 1e6 ? `${(n / 1e6).toFixed(1)} MB` : n >= 1e3 ? `${Math.round(n / 1e3)} kB` : `${n} B`);
+const fmtShare = (share) => (share * 100 < 0.1 ? "<0.1%" : `${(share * 100).toFixed(1)}%`);
+
+const stack = {
+  entries: [],
+  rows: [],
+  hovered: -1,
+  pinned: -1,
+  readout: null, // [value, name, meta] elements
+  summary: null, // what the readout shows when nothing is selected
+  onChange: null, // the ring subscribes here
+  get active() {
+    return this.hovered >= 0 ? this.hovered : this.pinned;
+  },
+  hover(i) {
+    if (this.hovered === i) return;
+    this.hovered = i;
+    this.sync();
+  },
+  toggle(i) {
+    this.pinned = this.pinned === i ? -1 : i;
+    this.sync();
+  },
+  sync() {
+    const active = this.active;
+    this.rows.forEach((row, i) => {
+      row.classList.toggle("is-active", i === active);
+      row.setAttribute("aria-pressed", String(i === this.pinned));
+    });
+    if (this.readout) {
+      const e = active >= 0 ? this.entries[active] : null;
+      const [value, name, meta] = this.readout;
+      [value.textContent, name.textContent, meta.textContent] = e ? [fmtShare(e.share), e.name, e.meta] : this.summary;
+    }
+    this.onChange?.(active);
+  },
+};
+
+async function loadLanguages() {
+  const body = document.getElementById("stack-body");
+  const status = document.getElementById("stack-status");
+  const list = document.getElementById("stack-list");
+  if (!body || !status || !list) return null;
+
+  let data;
+  try {
+    data = await fetchData("languages.json");
+    if (!Array.isArray(data.languages) || data.languages.length === 0 || !(data.total > 0)) throw new Error("no languages");
+  } catch (err) {
+    console.warn("Language totals unavailable:", err);
+    document.querySelectorAll(".stack-total, .stack-foot, .stack-scene, .stack-side").forEach((el) => (el.hidden = true));
+    status.innerHTML =
+      'The languages could not be loaded. See the repositories on <a href="https://github.com/choonsiong?tab=repositories" target="_blank" rel="noopener">GitHub</a>.';
+    return null;
+  }
+
+  const top = data.languages.slice(0, STACK_SLOTS);
+  const rest = data.languages.slice(STACK_SLOTS);
+  const entries = top.map((l, i) => ({
+    name: l.name,
+    share: l.bytes / data.total,
+    color: cssVar(`--lang-${i + 1}`),
+    sub: `${l.repos} ${l.repos === 1 ? "repo" : "repos"}`,
+    meta: `${fmtBytes(l.bytes)} · ${l.repos} ${l.repos === 1 ? "repo" : "repos"}`,
+  }));
+  if (rest.length) {
+    const bytes = rest.reduce((sum, l) => sum + l.bytes, 0);
+    const names = rest.slice(0, 3).map((l) => l.name).join(", ");
+    entries.push({
+      name: "Other",
+      share: bytes / data.total,
+      color: cssVar("--lang-other"),
+      sub: rest.length > 3 ? `${names} and ${rest.length - 3} more` : names,
+      meta: `${fmtBytes(bytes)} · ${rest.length} ${rest.length === 1 ? "language" : "languages"}`,
+    });
+  }
+
+  const el = (tag, className, text) => {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  };
+  const items = document.createDocumentFragment();
+  const strip = document.getElementById("stack-strip");
+  stack.rows = entries.map((e, i) => {
+    const row = el("button", "stack-row");
+    row.type = "button";
+    row.setAttribute("aria-pressed", "false");
+    row.style.setProperty("--c", e.color);
+    const bar = el("span", "stack-bar");
+    const fill = el("i");
+    fill.style.setProperty("--w", `${Math.max(e.share * 100, 0.6)}%`);
+    bar.append(fill);
+    const name = el("span", "stack-name", e.name);
+    name.append(el("span", "stack-sub", e.sub));
+    row.append(el("i", "stack-swatch"), name, el("span", "stack-share", fmtShare(e.share)), bar);
+    row.addEventListener("pointerenter", () => stack.hover(i));
+    row.addEventListener("pointerleave", () => stack.hover(-1));
+    row.addEventListener("focus", () => stack.hover(i));
+    row.addEventListener("blur", () => stack.hover(-1));
+    row.addEventListener("click", (ev) => {
+      stack.toggle(i);
+      if (ev.pointerType && ev.pointerType !== "mouse") stack.hover(-1); // no hover to leave on touch
+    });
+    const li = el("li");
+    li.append(row);
+    items.append(li);
+
+    const seg = el("i");
+    seg.style.flex = `${e.share} 0 0`;
+    seg.style.background = e.color;
+    strip?.append(seg);
+    return row;
+  });
+  list.replaceChildren(items);
+  status.remove();
+
+  document.getElementById("stack-count").textContent = fmtBytes(data.total);
+  document.getElementById("stack-summary").textContent =
+    `of source across ${data.repos.toLocaleString("en")} repositories in ${data.languages.length} languages`;
+  stack.readout = ["value", "name", "meta"].map((k) => document.getElementById(`stack-readout-${k}`));
+  stack.summary = [String(data.languages.length), "languages", `${data.repos.toLocaleString("en")} repositories`];
+  stack.entries = entries;
+  stack.sync();
+  return stack;
+}
+const languagesReady = loadLanguages();
 
 // Cursor-following glow on cards.
 document.querySelectorAll(".card").forEach((card) => {
@@ -412,3 +563,266 @@ if (renderer) {
     });
   }
 }
+
+// ---------- Stack ring (its own canvas inside #stack-scene) ----------
+// One extruded arc per entry, proportional to its share, lying flat under
+// a tilted camera. Hovering a segment or a row lifts it; a click pins it;
+// dragging spins the ring, which otherwise turns slowly on its own.
+function mountStackRing(model) {
+  const host = document.getElementById("stack-scene");
+  const canvas = document.getElementById("stack-canvas");
+  if (!host || !canvas || model.entries.length === 0) return;
+
+  let ringRenderer;
+  try {
+    ringRenderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  } catch (err) {
+    console.warn("Stack ring unavailable, showing the bar instead.", err);
+    document.body.classList.add("no-webgl");
+    return;
+  }
+  ringRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  ringRenderer.setClearColor(0x000000, 0);
+  ringRenderer.toneMapping = THREE.NeutralToneMapping; // keeps the palette's hues truer than ACES
+  ringRenderer.toneMappingExposure = 1.0;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 60);
+  const CAMERA_AT = new THREE.Vector3(0, 6.2, 7.4);
+  camera.position.copy(CAMERA_AT);
+  camera.lookAt(0, 0, 0);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.45));
+  const keyLight = new THREE.DirectionalLight(0xffffff, 1.1);
+  keyLight.position.set(3, 7, 4);
+  const tealLight = new THREE.PointLight(0x5eead4, 25, 30, 2);
+  tealLight.position.set(-5, 3, 3);
+  const violetLight = new THREE.PointLight(0xa78bfa, 25, 30, 2);
+  violetLight.position.set(5, 2, -4);
+  scene.add(keyLight, tealLight, violetLight);
+
+  // The segments are built in the XY plane; `tilt` lays them flat (local z up).
+  const tilt = new THREE.Group();
+  tilt.rotation.x = -Math.PI / 2;
+  scene.add(tilt);
+  const ring = new THREE.Group();
+  tilt.add(ring);
+
+  const R_OUT = 2.3;
+  const R_IN = 1.5;
+  const DEPTH = 0.42;
+  const GAP = 0.03; // radians between segments
+  const LIFT = 0.24; // how far a selected segment slides outward
+  const GLOW = { rest: 0.3, active: 0.85, dim: 0.08 };
+
+  let edge = Math.PI / 2; // 12 o'clock, then clockwise as seen from the camera
+  const segments = model.entries.map((entry, i) => {
+    const span = entry.share * Math.PI * 2;
+    const sweep = Math.max(span - GAP, 0.004);
+    const a1 = edge - GAP / 2;
+    const a0 = a1 - sweep;
+    edge -= span;
+
+    const shape = new THREE.Shape();
+    shape.moveTo(Math.cos(a1) * R_OUT, Math.sin(a1) * R_OUT);
+    shape.absarc(0, 0, R_OUT, a1, a0, true);
+    shape.absarc(0, 0, R_IN, a0, a1, false);
+    shape.closePath();
+    const geometry = new THREE.ExtrudeGeometry(shape, {
+      depth: DEPTH,
+      bevelEnabled: true,
+      bevelThickness: 0.025,
+      bevelSize: 0.02,
+      bevelSegments: 2,
+      curveSegments: Math.max(6, Math.round(sweep * 22)),
+    });
+    const color = new THREE.Color(entry.color);
+    const material = new THREE.MeshPhysicalMaterial({
+      color,
+      emissive: color,
+      emissiveIntensity: GLOW.rest,
+      roughness: 0.45,
+      metalness: 0.05,
+      clearcoat: 0.6,
+      clearcoatRoughness: 0.3,
+    });
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.z = -DEPTH / 2;
+    mesh.userData.index = i;
+    ring.add(mesh);
+    return { mesh, material, mid: a1 - sweep / 2, lift: 0, glow: GLOW.rest, color };
+  });
+
+  // Two hairline halos, like the rings around the hero's core.
+  const halo = (radius, color, opacity) =>
+    new THREE.Mesh(new THREE.TorusGeometry(radius, 0.007, 8, 240), new THREE.MeshBasicMaterial({ color, transparent: true, opacity }));
+  const haloA = halo(2.95, 0xa78bfa, 0.45);
+  haloA.rotation.set(Math.PI / 2 + 0.14, 0, 0);
+  const haloB = halo(3.3, 0x5eead4, 0.25);
+  haloB.rotation.set(Math.PI / 2 - 0.22, 0.3, 0);
+  scene.add(haloA, haloB);
+
+  // --- Interaction
+  const raycaster = new THREE.Raycaster();
+  const ndc = new THREE.Vector2();
+  const pointerTarget = new THREE.Vector2();
+  const pointerNow = new THREE.Vector2();
+  const AUTO_SPEED = reduceMotion ? 0 : 0.12; // rad/s
+  let spin = 0.4;
+  let spinSpeed = AUTO_SPEED;
+  let drag = null;
+  let overSegment = false;
+  let dirty = true;
+
+  const toNdc = (e) => {
+    const rect = canvas.getBoundingClientRect();
+    ndc.set(((e.clientX - rect.left) / rect.width) * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);
+    return ndc;
+  };
+  const pick = (e) => {
+    raycaster.setFromCamera(toNdc(e), camera);
+    const hit = raycaster.intersectObjects(ring.children, false)[0];
+    return hit ? hit.object.userData.index : -1;
+  };
+
+  canvas.addEventListener("pointermove", (e) => {
+    pointerTarget.copy(toNdc(e));
+    dirty = true;
+    if (drag) {
+      const dx = e.clientX - drag.x;
+      const now = performance.now();
+      drag.moved += Math.abs(dx);
+      spin -= dx * 0.012;
+      drag.speed = THREE.MathUtils.clamp((-dx * 0.012) / Math.max((now - drag.at) / 1000, 1 / 240), -6, 6);
+      drag.x = e.clientX;
+      drag.at = now;
+      return;
+    }
+    const i = pick(e);
+    overSegment = i >= 0;
+    canvas.style.cursor = overSegment ? "pointer" : "";
+    model.hover(i);
+  });
+  canvas.addEventListener("pointerleave", () => {
+    pointerTarget.set(0, 0);
+    overSegment = false;
+    canvas.style.cursor = "";
+    model.hover(-1);
+    dirty = true;
+  });
+  canvas.addEventListener("pointerdown", (e) => {
+    if (e.button !== 0) return;
+    drag = { x: e.clientX, at: performance.now(), moved: 0, speed: 0 };
+    canvas.setPointerCapture(e.pointerId);
+    canvas.classList.add("dragging");
+  });
+  const endDrag = (e) => {
+    if (!drag) return;
+    canvas.classList.remove("dragging");
+    if (drag.moved < 4) {
+      // a tap or click, not a drag
+      model.toggle(pick(e));
+      if (e.pointerType !== "mouse") model.hover(-1);
+    } else {
+      spinSpeed = drag.speed;
+    }
+    drag = null;
+    dirty = true;
+  };
+  canvas.addEventListener("pointerup", endDrag);
+  canvas.addEventListener("pointercancel", endDrag);
+
+  model.onChange = () => {
+    dirty = true;
+    start();
+  };
+
+  // --- Size
+  const resize = () => {
+    const w = host.clientWidth;
+    const h = host.clientHeight;
+    if (!w || !h) return;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    ringRenderer.setSize(w, h, false);
+    dirty = true;
+  };
+  resize();
+  new ResizeObserver(() => {
+    resize();
+    start();
+  }).observe(host);
+
+  // --- Render loop: only while the section is on screen and the tab visible
+  let visible = false;
+  let running = false;
+  let shownAt = -1; // when the ring first came into view, for the entrance
+  let last = 0;
+  let elapsed = 0;
+  const ease = (x) => 1 - Math.pow(1 - x, 3);
+
+  const update = (dt) => {
+    const active = model.active;
+    const k = reduceMotion ? 1 : 1 - Math.exp(-dt * 10);
+
+    if (!drag) spinSpeed += (((overSegment || model.hovered >= 0) ? 0 : AUTO_SPEED) - spinSpeed) * (1 - Math.exp(-dt * 2.5));
+    spin += spinSpeed * dt;
+
+    const entrance = reduceMotion || shownAt < 0 ? 1 : Math.min((elapsed - shownAt) / 1.2, 1);
+    ring.rotation.z = -spin - (1 - ease(entrance)) * 0.9;
+
+    segments.forEach((s, i) => {
+      const wantLift = i === active ? LIFT : 0;
+      const wantGlow = active < 0 ? GLOW.rest : i === active ? GLOW.active : GLOW.dim;
+      s.lift += (wantLift - s.lift) * k;
+      s.glow += (wantGlow - s.glow) * k;
+      s.mesh.position.set(Math.cos(s.mid) * s.lift, Math.sin(s.mid) * s.lift, -DEPTH / 2);
+      s.material.emissiveIntensity = s.glow;
+      const dim = active < 0 || i === active ? 1 : 0.55;
+      s.material.color.copy(s.color).multiplyScalar(dim);
+      const a = reduceMotion || shownAt < 0 ? 1 : THREE.MathUtils.clamp((elapsed - shownAt - i * 0.07) / 0.9, 0, 1);
+      s.mesh.scale.setScalar(Math.max(ease(a), 0.001));
+    });
+
+    pointerNow.lerp(pointerTarget, k * 0.5);
+    camera.position.set(CAMERA_AT.x + pointerNow.x * 0.7, CAMERA_AT.y - pointerNow.y * 0.5, CAMERA_AT.z);
+    camera.lookAt(0, 0, 0);
+    haloA.rotation.z = elapsed * 0.06;
+    haloB.rotation.z = -elapsed * 0.04;
+  };
+
+  const loop = () => {
+    if (!visible || document.hidden) {
+      running = false;
+      return;
+    }
+    const now = performance.now();
+    const dt = Math.min((now - last) / 1000, 0.05);
+    last = now;
+    elapsed += dt;
+    if (shownAt < 0) shownAt = elapsed;
+    update(dt);
+    if (!reduceMotion || dirty) {
+      ringRenderer.render(scene, camera);
+      dirty = false;
+    }
+    requestAnimationFrame(loop);
+  };
+  const start = () => {
+    if (running || !visible || document.hidden) return;
+    running = true;
+    last = performance.now();
+    requestAnimationFrame(loop);
+  };
+
+  new IntersectionObserver(
+    ([entry]) => {
+      visible = entry.isIntersecting;
+      start();
+    },
+    { threshold: 0.15 }
+  ).observe(host);
+  document.addEventListener("visibilitychange", start);
+}
+
+if (renderer) languagesReady.then((model) => model && mountStackRing(model));

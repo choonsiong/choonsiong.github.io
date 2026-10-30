@@ -1,0 +1,63 @@
+# Refreshes the data behind the landing page's Activity and Stack sections
+# once a day: the GitHub contribution calendar and the language totals over
+# every repository. Both come from GitHub's GraphQL API, which needs a
+# token, so they are fetched here rather than from the browser.
+#
+# The results, contributions.json and languages.json, are committed to the
+# `data` branch, which holds nothing else. The page reads them from
+# raw.githubusercontent.com, so nothing is pushed to the default branch
+# (whose ruleset requires a pull request) and no release is needed to
+# refresh them.
+#
+# The workflow's own token sees the public profile and public repositories,
+# so the language totals it produces cover public code only. To count
+# private repositories too, add a repository secret DATA_TOKEN holding a
+# fine-grained personal access token with access to all repositories and
+# only the Metadata permission (read, the minimum); it is used in
+# preference when present.
+
+name: Data
+
+on:
+  schedule:
+    - cron: '17 2 * * *' # daily, 02:17 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write # pushes the data branch
+    env:
+      GH_TOKEN: ${{ secrets.DATA_TOKEN || secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch the contribution calendar
+        run: .github/scripts/contributions.sh "$GITHUB_REPOSITORY_OWNER" "$RUNNER_TEMP/contributions.json"
+
+      - name: Fetch the language totals
+        run: .github/scripts/languages.sh "$GITHUB_REPOSITORY_OWNER" "$RUNNER_TEMP/languages.json"
+
+      - name: Commit them to the data branch if they changed
+        run: |
+          if git fetch origin data; then
+            git switch -c data FETCH_HEAD
+          else
+            git switch --orphan data
+          fi
+          cp "$RUNNER_TEMP/contributions.json" "$RUNNER_TEMP/languages.json" .
+          git add contributions.json languages.json
+          if git diff --cached --quiet; then
+            echo "contributions.json and languages.json are unchanged"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m "Refresh the site's data files"
+          git push origin data

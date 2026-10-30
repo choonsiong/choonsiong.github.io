@@ -42,6 +42,7 @@
       <nav class="nav-links" aria-label="Primary">
         <a href="#apps">Apps</a>
         <a href="#activity">Activity</a>
+        <a href="#stack">Stack</a>
         <a href="#about">About</a>
         <a href="https://github.com/choonsiong" target="_blank" rel="noopener">GitHub</a>
       </nav>
@@ -144,10 +145,10 @@
         <div class="activity reveal" id="contributions">
           <div class="activity-head">
             <p class="activity-total"><span class="activity-count" id="activity-count">&nbsp;</span> contributions in the last year</p>
-            <a class="activity-link" href="https://github.com/choonsiong" target="_blank" rel="noopener">github.com/choonsiong <span aria-hidden="true">→</span></a>
+            <a class="panel-link" href="https://github.com/choonsiong" target="_blank" rel="noopener">github.com/choonsiong <span aria-hidden="true">→</span></a>
           </div>
           <div class="activity-body" id="activity-body">
-            <p class="activity-status" id="activity-status">Loading the calendar…</p>
+            <p class="panel-status" id="activity-status">Loading the calendar…</p>
           </div>
           <div class="activity-foot">
             <span id="activity-updated"></span>
@@ -160,11 +161,46 @@
         </div>
       </section>
 
+      <!-- ===================== STACK ===================== -->
+      <section class="section" id="stack">
+        <div class="section-head reveal">
+          <p class="kicker">03 — Stack</p>
+          <h2>What the code is made of</h2>
+          <p class="sub">Every language across my GitHub repositories, weighed by bytes of source and refreshed daily alongside the calendar. Tap or hover a segment or a row for its share, and drag the ring to spin it.</p>
+        </div>
+
+        <!-- Filled in by main.js from languages.json on the repo's data branch. -->
+        <div class="stack-panel reveal" id="languages">
+          <div class="stack-head">
+            <p class="stack-total"><span class="stack-count" id="stack-count">&nbsp;</span> <span id="stack-summary">of source across my repositories</span></p>
+            <a class="panel-link" href="https://github.com/choonsiong?tab=repositories" target="_blank" rel="noopener">github.com/choonsiong <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="stack-body" id="stack-body">
+            <div class="stack-scene" id="stack-scene" aria-hidden="true">
+              <canvas id="stack-canvas"></canvas>
+              <div class="stack-readout">
+                <span class="readout-value" id="stack-readout-value"></span>
+                <span class="readout-name" id="stack-readout-name"></span>
+                <span class="readout-meta" id="stack-readout-meta"></span>
+              </div>
+            </div>
+            <div class="stack-side">
+              <div class="stack-strip" id="stack-strip" aria-hidden="true"></div>
+              <ol class="stack-list" id="stack-list" aria-label="Languages by share of source, largest first"></ol>
+            </div>
+            <p class="panel-status" id="stack-status">Loading the languages…</p>
+          </div>
+          <div class="stack-foot">
+            <span>Bytes of source per language, as GitHub detects them, over every repository I own. Forks, vendored code and data files are not counted.</span>
+          </div>
+        </div>
+      </section>
+
       <!-- ===================== ABOUT ===================== -->
       <section class="section" id="about">
         <div class="about">
           <div class="about-text reveal">
-            <p class="kicker">03 — About</p>
+            <p class="kicker">04 — About</p>
             <h2>Made by Lee Choon Siong</h2>
             <p>
               I'm a software engineer who likes building small, well-crafted tools.
