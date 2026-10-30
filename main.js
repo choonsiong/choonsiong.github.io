@@ -34,9 +34,12 @@ if ("IntersectionObserver" in window) {
   revealEls.forEach((el) => el.classList.add("in"));
 }
 
-// GitHub contribution calendar, from contributions.json (written daily by
-// .github/workflows/contributions.yml). Weeks run Sunday to Saturday, as
-// on GitHub; the first week is padded so every column has seven rows.
+// GitHub contribution calendar, from contributions.json on this repo's
+// `data` branch (written daily by .github/workflows/contributions.yml).
+// Weeks run Sunday to Saturday, as on GitHub; the first week is padded so
+// every column has seven rows.
+const CONTRIBUTIONS_URL = "https://raw.githubusercontent.com/choonsiong/choonsiong.github.io/data/contributions.json";
+
 async function loadContributions() {
   const body = document.getElementById("activity-body");
   const status = document.getElementById("activity-status");
@@ -44,12 +47,13 @@ async function loadContributions() {
 
   let data;
   try {
-    const res = await fetch("contributions.json");
+    const res = await fetch(CONTRIBUTIONS_URL);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     data = await res.json();
     if (!Array.isArray(data.days) || data.days.length === 0) throw new Error("no days");
   } catch (err) {
     console.warn("Contribution calendar unavailable:", err);
+    document.querySelectorAll(".activity-total, .activity-foot").forEach((el) => (el.hidden = true));
     status.innerHTML =
       'The calendar could not be loaded. See it on <a href="https://github.com/choonsiong" target="_blank" rel="noopener">GitHub</a>.';
     return;
