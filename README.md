@@ -10,14 +10,14 @@ The page lists each app with a short description and a link to where it runs:
 | App | Where | Source |
 |---|---|---|
 | HideIt | <https://app.choonsiong.com/hideit/> | [choonsiong/hideit](https://github.com/choonsiong/hideit) |
-| Flashcards | <https://app.choonsiong.com/flashcard/> | private |
+| Flashcards | <https://app.choonsiong.com/flashcards/> | [choonsiong/flashcards](https://github.com/choonsiong/flashcards) |
 | Tasks | <https://tasks.choonsiong.com> | private |
 | Spending | <https://spending.choonsiong.com> | private |
 | Docs | <https://docs.choonsiong.com> | private |
 
 HideIt and Flashcards are static sites published to this same Pages host
 from their own repositories, which is why they live under `/hideit/` and
-`/flashcard/`. The other three are self-hosted services and only link out
+`/flashcards/`. The other three are self-hosted services and only link out
 from here.
 
 ## How it's built
