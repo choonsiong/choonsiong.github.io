@@ -100,6 +100,13 @@ mandatory Metadata (read) permission, which is what language statistics
 need. The workflow prefers it when present. It also covers the calendar if
 GitHub ever refuses the default token for that.
 
+GitHub disables scheduled workflows in a public repository after 60 days
+without commits and emails the owner. If the Activity or Stack section goes
+stale with no error on the page, check the Actions tab for a disabled Data
+workflow first; "Enable workflow" restarts it. A manual run
+(`gh workflow run data.yml --ref main`) is only needed for an immediate
+refresh or to try a script change.
+
 ## Workflow and releases
 
 Changes reach `main` only through pull requests (ruleset, no bypass). Pushing

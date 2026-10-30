@@ -62,6 +62,12 @@ and `jq` installed: `.github/scripts/contributions.sh choonsiong` and
 `.github/scripts/languages.sh choonsiong` (both outputs are git-ignored,
 and the page served from localhost reads them before the published ones).
 
+The schedule needs no attention, with one caveat: GitHub pauses scheduled
+workflows in a public repository after 60 days without commits and sends
+an email when it does. If the calendar or the languages stop refreshing,
+"Enable workflow" on the Data workflow in the Actions tab starts them
+again.
+
 `CNAME` sets the custom domain and `.nojekyll` stops GitHub Pages from
 running the files through Jekyll.
 
