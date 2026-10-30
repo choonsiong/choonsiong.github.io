@@ -41,6 +41,7 @@
       </a>
       <nav class="nav-links" aria-label="Primary">
         <a href="#apps">Apps</a>
+        <a href="#activity">Activity</a>
         <a href="#about">About</a>
         <a href="https://github.com/choonsiong" target="_blank" rel="noopener">GitHub</a>
       </nav>
@@ -131,11 +132,39 @@
         </div>
       </section>
 
+      <!-- ===================== ACTIVITY ===================== -->
+      <section class="section" id="activity">
+        <div class="section-head reveal">
+          <p class="kicker">02 — Activity</p>
+          <h2>A year of commits</h2>
+          <p class="sub">My GitHub contribution calendar, refreshed once a day by a scheduled workflow in this site's repository. Every square is a day; the brighter it is, the more that day shipped.</p>
+        </div>
+
+        <!-- Filled in by main.js from contributions.json. -->
+        <div class="activity reveal" id="contributions">
+          <div class="activity-head">
+            <p class="activity-total"><span class="activity-count" id="activity-count">&nbsp;</span> contributions in the last year</p>
+            <a class="activity-link" href="https://github.com/choonsiong" target="_blank" rel="noopener">github.com/choonsiong <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="activity-body" id="activity-body">
+            <p class="activity-status" id="activity-status">Loading the calendar…</p>
+          </div>
+          <div class="activity-foot">
+            <span id="activity-updated"></span>
+            <span class="legend" aria-label="Scale: less to more contributions">
+              Less
+              <i class="cell l0"></i><i class="cell l1"></i><i class="cell l2"></i><i class="cell l3"></i><i class="cell l4"></i>
+              More
+            </span>
+          </div>
+        </div>
+      </section>
+
       <!-- ===================== ABOUT ===================== -->
       <section class="section" id="about">
         <div class="about">
           <div class="about-text reveal">
-            <p class="kicker">02 — About</p>
+            <p class="kicker">03 — About</p>
             <h2>Made by Lee Choon Siong</h2>
             <p>
               I'm a software engineer who likes building small, well-crafted tools.

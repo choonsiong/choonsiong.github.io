@@ -34,6 +34,99 @@ if ("IntersectionObserver" in window) {
   revealEls.forEach((el) => el.classList.add("in"));
 }
 
+// GitHub contribution calendar, from contributions.json (written daily by
+// .github/workflows/contributions.yml). Weeks run Sunday to Saturday, as
+// on GitHub; the first week is padded so every column has seven rows.
+async function loadContributions() {
+  const body = document.getElementById("activity-body");
+  const status = document.getElementById("activity-status");
+  if (!body || !status) return;
+
+  let data;
+  try {
+    const res = await fetch("contributions.json");
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    data = await res.json();
+    if (!Array.isArray(data.days) || data.days.length === 0) throw new Error("no days");
+  } catch (err) {
+    console.warn("Contribution calendar unavailable:", err);
+    status.innerHTML =
+      'The calendar could not be loaded. See it on <a href="https://github.com/choonsiong" target="_blank" rel="noopener">GitHub</a>.';
+    return;
+  }
+
+  const fmt = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
+  const monthFmt = new Intl.DateTimeFormat("en", { month: "short", timeZone: "UTC" });
+  const toDate = (iso) => new Date(`${iso}T00:00:00Z`);
+
+  const cells = document.createElement("div");
+  cells.className = "heatmap-cells";
+  const months = document.createElement("div");
+  months.className = "heatmap-months";
+
+  // Pad the first week so the first day sits in its weekday row.
+  for (let i = 0; i < toDate(data.days[0][0]).getUTCDay(); i++) {
+    const pad = document.createElement("i");
+    pad.className = "cell pad";
+    cells.appendChild(pad);
+  }
+
+  const labels = []; // [column, text]
+  let column = 0;
+  let lastMonth = -1;
+  data.days.forEach(([iso, count, level], i) => {
+    const date = toDate(iso);
+    const cell = document.createElement("i");
+    cell.className = `cell l${level}`;
+    cell.title = `${count === 0 ? "No" : count} contribution${count === 1 ? "" : "s"} on ${fmt.format(date)}`;
+    cells.appendChild(cell);
+
+    column = Math.floor((cells.childElementCount - 1) / 7);
+    if (date.getUTCMonth() !== lastMonth) {
+      lastMonth = date.getUTCMonth();
+      const label = [column, monthFmt.format(date)];
+      // Two months in one column: the later one owns most of it.
+      if (labels.length && labels[labels.length - 1][0] === column) labels[labels.length - 1] = label;
+      else labels.push(label);
+    }
+  });
+  // A label in the very first column collides with the next one if a new
+  // month starts a week or two later, so drop it in that case (as GitHub does).
+  if (labels.length > 1 && labels[0][0] === 0 && labels[1][0] < 3) labels.shift();
+  for (const [col, text] of labels) {
+    const span = document.createElement("span");
+    span.style.gridColumn = String(col + 1);
+    span.textContent = text;
+    months.appendChild(span);
+  }
+
+  const days = document.createElement("div");
+  days.className = "heatmap-days";
+  days.setAttribute("aria-hidden", "true");
+  ["", "Mon", "", "Wed", "", "Fri", ""].forEach((d) => {
+    const span = document.createElement("span");
+    span.textContent = d;
+    days.appendChild(span);
+  });
+
+  const first = data.days[0][0];
+  const last = data.days[data.days.length - 1][0];
+  const heatmap = document.createElement("div");
+  heatmap.className = "heatmap";
+  heatmap.setAttribute("role", "img");
+  heatmap.setAttribute(
+    "aria-label",
+    `${data.total.toLocaleString("en")} GitHub contributions from ${fmt.format(toDate(first))} to ${fmt.format(toDate(last))}, shown as a calendar heatmap`
+  );
+  heatmap.append(months, days, cells);
+
+  document.getElementById("activity-count").textContent = data.total.toLocaleString("en");
+  document.getElementById("activity-updated").textContent = `Up to ${fmt.format(toDate(last))}`;
+  body.replaceChildren(heatmap);
+  body.scrollLeft = body.scrollWidth; // newest weeks first on narrow screens
+}
+loadContributions();
+
 // Cursor-following glow on cards.
 document.querySelectorAll(".card").forEach((card) => {
   card.addEventListener("pointermove", (e) => {
