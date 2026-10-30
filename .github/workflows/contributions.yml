@@ -1,0 +1,48 @@
+# Refreshes contributions.json, the GitHub contribution calendar the
+# landing page's Activity section draws, once a day. The calendar is only
+# available through GitHub's GraphQL API, which needs a token, so it is
+# fetched here and committed rather than requested from the browser.
+#
+# The workflow's own token is enough for a public profile. If GitHub ever
+# refuses it ("Resource not accessible by integration"), add a repository
+# secret CONTRIBUTIONS_TOKEN holding a fine-grained personal access token
+# with no permissions; it is used in preference when present.
+#
+# The push to the default branch is what republishes the page.
+
+name: Contributions
+
+on:
+  schedule:
+    - cron: '17 2 * * *' # daily, 02:17 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: contributions
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write # commits contributions.json
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch the contribution calendar
+        env:
+          GH_TOKEN: ${{ secrets.CONTRIBUTIONS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: .github/scripts/contributions.sh "$GITHUB_REPOSITORY_OWNER" contributions.json
+
+      - name: Commit it if it changed
+        run: |
+          if git diff --quiet -- contributions.json; then
+            echo "contributions.json is unchanged"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add contributions.json
+          git commit -m "Update the contribution calendar"
+          git push
