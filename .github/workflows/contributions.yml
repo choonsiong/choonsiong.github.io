@@ -1,14 +1,17 @@
-# Refreshes contributions.json, the GitHub contribution calendar the
-# landing page's Activity section draws, once a day. The calendar is only
-# available through GitHub's GraphQL API, which needs a token, so it is
-# fetched here and committed rather than requested from the browser.
+# Refreshes the GitHub contribution calendar the landing page's Activity
+# section draws, once a day. The calendar is only available through
+# GitHub's GraphQL API, which needs a token, so it is fetched here rather
+# than from the browser.
+#
+# The result, contributions.json, is committed to the `data` branch, which
+# holds nothing else. The page reads it from raw.githubusercontent.com, so
+# nothing is pushed to the default branch (whose ruleset requires a pull
+# request) and no release is needed to refresh the calendar.
 #
 # The workflow's own token is enough for a public profile. If GitHub ever
 # refuses it ("Resource not accessible by integration"), add a repository
 # secret CONTRIBUTIONS_TOKEN holding a fine-grained personal access token
 # with no permissions; it is used in preference when present.
-#
-# The push to the default branch is what republishes the page.
 
 name: Contributions
 
@@ -26,23 +29,29 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
-      contents: write # commits contributions.json
+      contents: write # pushes the data branch
     steps:
       - uses: actions/checkout@v4
 
       - name: Fetch the contribution calendar
         env:
           GH_TOKEN: ${{ secrets.CONTRIBUTIONS_TOKEN || secrets.GITHUB_TOKEN }}
-        run: .github/scripts/contributions.sh "$GITHUB_REPOSITORY_OWNER" contributions.json
+        run: .github/scripts/contributions.sh "$GITHUB_REPOSITORY_OWNER" "$RUNNER_TEMP/contributions.json"
 
-      - name: Commit it if it changed
+      - name: Commit it to the data branch if it changed
         run: |
-          if git diff --quiet -- contributions.json; then
+          if git fetch origin data; then
+            git switch -c data FETCH_HEAD
+          else
+            git switch --orphan data
+          fi
+          cp "$RUNNER_TEMP/contributions.json" contributions.json
+          git add contributions.json
+          if git diff --cached --quiet; then
             echo "contributions.json is unchanged"
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add contributions.json
           git commit -m "Update the contribution calendar"
-          git push
+          git push origin data

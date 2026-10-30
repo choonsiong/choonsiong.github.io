@@ -21,11 +21,11 @@ from their own repositories, which is why they live under `/hideit/` and
 from here.
 
 Below the apps, an Activity section shows my GitHub contribution calendar
-for the last year, drawn from `contributions.json` (see below).
+for the last year (see "The contribution calendar" below).
 
 ## How it's built
 
-Three files, one data file, and no build step:
+Three files and no build step:
 
 - `index.html` holds the content. The app cards are plain `<article>` blocks
   in the `#apps` section; add, edit or remove them there.
@@ -34,17 +34,25 @@ Three files, one data file, and no build step:
   from jsDelivr through the import map in `index.html`. Everything that is not
   3D (nav, reveal-on-scroll, card glow, the contribution calendar) runs even
   where WebGL is unavailable.
-- `contributions.json` is the GitHub contribution calendar the Activity
-  section draws: a day per entry, with its count and GitHub's 0–4 level. The
-  calendar is only available through GitHub's GraphQL API, which needs a
-  token, so the browser can't fetch it directly. Instead
-  `.github/workflows/contributions.yml` runs `.github/scripts/contributions.sh`
-  once a day (and on demand from the Actions tab), commits the file to `main`
-  when it changed, and that push republishes the page. The workflow's own
-  token is enough for a public profile; if GitHub refuses it, add a repository
-  secret `CONTRIBUTIONS_TOKEN` with a fine-grained personal access token that
-  has no permissions. To refresh locally with `gh` and `jq` installed:
-  `.github/scripts/contributions.sh choonsiong`.
+
+### The contribution calendar
+
+The Activity section draws `contributions.json`: a day per entry, with its
+count and GitHub's 0–4 level. The calendar is only available through
+GitHub's GraphQL API, which needs a token, so the browser can't fetch it
+from GitHub directly. Instead `.github/workflows/contributions.yml` runs
+`.github/scripts/contributions.sh` once a day (and on demand from the
+Actions tab) and commits the file to the `data` branch, which holds nothing
+else. The page reads it from
+`https://raw.githubusercontent.com/choonsiong/choonsiong.github.io/data/contributions.json`,
+so refreshing the calendar touches neither `main` nor the releases. If the
+file can't be loaded, the section shows a link to GitHub instead.
+
+The workflow's own token is enough for a public profile; if GitHub refuses
+it, add a repository secret `CONTRIBUTIONS_TOKEN` with a fine-grained
+personal access token that has no permissions. To produce the file locally
+with `gh` and `jq` installed: `.github/scripts/contributions.sh choonsiong`
+(the output is git-ignored).
 
 `CNAME` sets the custom domain and `.nojekyll` stops GitHub Pages from
 running the files through Jekyll.
