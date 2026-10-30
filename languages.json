@@ -1,0 +1,259 @@
+{
+  "login": "choonsiong",
+  "repos": 112,
+  "total": 42546696,
+  "languages": [
+    {
+      "name": "Java",
+      "color": "#b07219",
+      "bytes": 15521536,
+      "repos": 20
+    },
+    {
+      "name": "HTML",
+      "color": "#e34c26",
+      "bytes": 6254309,
+      "repos": 46
+    },
+    {
+      "name": "Go",
+      "color": "#00ADD8",
+      "bytes": 6075048,
+      "repos": 52
+    },
+    {
+      "name": "Python",
+      "color": "#3572A5",
+      "bytes": 2616891,
+      "repos": 21
+    },
+    {
+      "name": "CSS",
+      "color": "#663399",
+      "bytes": 2347422,
+      "repos": 35
+    },
+    {
+      "name": "Vue",
+      "color": "#41b883",
+      "bytes": 1979323,
+      "repos": 8
+    },
+    {
+      "name": "TypeScript",
+      "color": "#3178c6",
+      "bytes": 1633016,
+      "repos": 16
+    },
+    {
+      "name": "Jinja",
+      "color": "#a52a22",
+      "bytes": 1376816,
+      "repos": 5
+    },
+    {
+      "name": "Swift",
+      "color": "#F05138",
+      "bytes": 1305028,
+      "repos": 6
+    },
+    {
+      "name": "JavaScript",
+      "color": "#f1e05a",
+      "bytes": 1265791,
+      "repos": 34
+    },
+    {
+      "name": "Go Template",
+      "color": "#00ADD8",
+      "bytes": 655910,
+      "repos": 5
+    },
+    {
+      "name": "Shell",
+      "color": "#89e051",
+      "bytes": 566742,
+      "repos": 39
+    },
+    {
+      "name": "PLpgSQL",
+      "color": "#336790",
+      "bytes": 134900,
+      "repos": 5
+    },
+    {
+      "name": "Mustache",
+      "color": "#724b3b",
+      "bytes": 113574,
+      "repos": 3
+    },
+    {
+      "name": "C",
+      "color": "#555555",
+      "bytes": 81630,
+      "repos": 7
+    },
+    {
+      "name": "HCL",
+      "color": "#844FBA",
+      "bytes": 73769,
+      "repos": 1
+    },
+    {
+      "name": "Makefile",
+      "color": "#427819",
+      "bytes": 71986,
+      "repos": 43
+    },
+    {
+      "name": "Vim Script",
+      "color": "#199f4b",
+      "bytes": 70118,
+      "repos": 1
+    },
+    {
+      "name": "Ruby",
+      "color": "#701516",
+      "bytes": 52341,
+      "repos": 9
+    },
+    {
+      "name": "Dockerfile",
+      "color": "#384d54",
+      "bytes": 48362,
+      "repos": 23
+    },
+    {
+      "name": "PHP",
+      "color": "#4F5D95",
+      "bytes": 45546,
+      "repos": 4
+    },
+    {
+      "name": "C++",
+      "color": "#f34b7d",
+      "bytes": 41193,
+      "repos": 5
+    },
+    {
+      "name": "Lua",
+      "color": "#000080",
+      "bytes": 40579,
+      "repos": 2
+    },
+    {
+      "name": "Rust",
+      "color": "#dea584",
+      "bytes": 38313,
+      "repos": 3
+    },
+    {
+      "name": "Julia",
+      "color": "#a270ba",
+      "bytes": 19986,
+      "repos": 1
+    },
+    {
+      "name": "Puppet",
+      "color": "#302B6D",
+      "bytes": 19815,
+      "repos": 2
+    },
+    {
+      "name": "Common Lisp",
+      "color": "#3fb68b",
+      "bytes": 15980,
+      "repos": 1
+    },
+    {
+      "name": "Kotlin",
+      "color": "#A97BFF",
+      "bytes": 15163,
+      "repos": 1
+    },
+    {
+      "name": "PowerShell",
+      "color": "#012456",
+      "bytes": 13242,
+      "repos": 6
+    },
+    {
+      "name": "PLSQL",
+      "color": "#dad8d8",
+      "bytes": 13165,
+      "repos": 1
+    },
+    {
+      "name": "Perl",
+      "color": "#0298c3",
+      "bytes": 12666,
+      "repos": 1
+    },
+    {
+      "name": "Batchfile",
+      "color": "#C1F12E",
+      "bytes": 6522,
+      "repos": 5
+    },
+    {
+      "name": "NSIS",
+      "color": null,
+      "bytes": 6439,
+      "repos": 1
+    },
+    {
+      "name": "Assembly",
+      "color": "#6E4C13",
+      "bytes": 5365,
+      "repos": 2
+    },
+    {
+      "name": "Vim Snippet",
+      "color": "#199f4b",
+      "bytes": 2502,
+      "repos": 1
+    },
+    {
+      "name": "Smarty",
+      "color": "#f0c040",
+      "bytes": 2136,
+      "repos": 3
+    },
+    {
+      "name": "Hack",
+      "color": "#878787",
+      "bytes": 1812,
+      "repos": 1
+    },
+    {
+      "name": "SCSS",
+      "color": "#c6538c",
+      "bytes": 1082,
+      "repos": 1
+    },
+    {
+      "name": "Pascal",
+      "color": "#E3F171",
+      "bytes": 339,
+      "repos": 1
+    },
+    {
+      "name": "Slim",
+      "color": "#2b2b2b",
+      "bytes": 230,
+      "repos": 2
+    },
+    {
+      "name": "Zig",
+      "color": "#ec915c",
+      "bytes": 97,
+      "repos": 1
+    },
+    {
+      "name": "DIGITAL Command Language",
+      "color": null,
+      "bytes": 12,
+      "repos": 1
+    }
+  ]
+}
