@@ -9,6 +9,16 @@
   --accent: #5eead4;   /* teal */
   --accent-2: #a78bfa; /* violet */
   --accent-3: #f472b6; /* pink, used sparingly */
+  /* Categorical palette for the Stack ring, one hue per language in this fixed order. */
+  --lang-1: #2dd4bf;
+  --lang-2: #a78bfa;
+  --lang-3: #fbbf24;
+  --lang-4: #f472b6;
+  --lang-5: #38bdf8;
+  --lang-6: #a3e635;
+  --lang-7: #fb923c;
+  --lang-8: #818cf8;
+  --lang-other: #5b6474;
   --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: "Space Grotesk", var(--font-body);
   --max: 1120px;
@@ -342,8 +352,8 @@ h1 {
 .card-link span { transition: transform 0.25s var(--ease); display: inline-block; }
 .card:hover .card-link span { transform: translateX(4px); }
 
-/* ---------- Activity (GitHub contribution calendar) ---------- */
-.activity {
+/* ---------- Panels (Activity calendar, Stack ring) ---------- */
+.activity, .stack-panel {
   --cell: 13px;
   --gap: 4px;
   --days: 34px;
@@ -354,7 +364,7 @@ h1 {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
-.activity-head, .activity-foot {
+.activity-head, .activity-foot, .stack-head, .stack-foot {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -363,16 +373,16 @@ h1 {
   font-size: 14px;
   color: var(--muted);
 }
-.activity-head { margin-bottom: 22px; }
-.activity-foot { margin-top: 18px; font-size: 13px; }
-.activity-total { margin: 0; font-size: 17px; color: var(--text); }
-.activity-count { font-family: var(--font-display); font-weight: 700; font-size: 26px; letter-spacing: -0.02em; }
-.activity-link { font-weight: 600; color: var(--text); display: inline-flex; gap: 6px; align-items: center; }
-.activity-link span { transition: transform 0.25s var(--ease); display: inline-block; }
-.activity-link:hover { color: var(--accent); }
-.activity-link:hover span { transform: translateX(4px); }
-.activity-status { margin: 0; color: var(--muted); font-size: 15px; }
-.activity-status a { color: var(--text); border-bottom: 1px solid var(--accent); }
+.activity-head, .stack-head { margin-bottom: 22px; }
+.activity-foot, .stack-foot { margin-top: 18px; font-size: 13px; }
+.activity-total, .stack-total { margin: 0; font-size: 17px; color: var(--text); }
+.activity-count, .stack-count { font-family: var(--font-display); font-weight: 700; font-size: 26px; letter-spacing: -0.02em; }
+.panel-link { font-weight: 600; color: var(--text); display: inline-flex; gap: 6px; align-items: center; }
+.panel-link span { transition: transform 0.25s var(--ease); display: inline-block; }
+.panel-link:hover { color: var(--accent); }
+.panel-link:hover span { transform: translateX(4px); }
+.panel-status { margin: 0; color: var(--muted); font-size: 15px; grid-column: 1 / -1; }
+.panel-status a { color: var(--text); border-bottom: 1px solid var(--accent); }
 
 .activity-body { overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; padding-bottom: 6px; }
 
@@ -424,6 +434,132 @@ h1 {
 .legend .cell { width: 11px; height: 11px; }
 .legend .cell:first-of-type { margin-left: 4px; }
 .legend .cell:last-of-type { margin-right: 4px; }
+
+/* ---------- Stack (languages across the repositories) ---------- */
+.stack-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px 40px;
+  align-items: center;
+}
+.stack-scene, .stack-side { min-width: 0; } /* long labels truncate instead of widening the grid */
+.stack-scene {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+}
+.stack-scene::before {
+  /* soft glow behind the ring */
+  content: "";
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(94, 234, 212, 0.16), rgba(167, 139, 250, 0.1) 45%, transparent 70%);
+  filter: blur(28px);
+  pointer-events: none;
+}
+#stack-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: pan-y; /* a sideways drag spins the ring; an up-down one still scrolls */
+  cursor: grab;
+}
+#stack-canvas.dragging { cursor: grabbing; }
+.stack-readout {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-top: 4%;
+  pointer-events: none;
+}
+.readout-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(30px, 4vw, 42px);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.readout-name { margin-top: 8px; font-weight: 600; font-size: 15px; }
+.readout-meta { margin-top: 2px; color: var(--muted); font-size: 12.5px; }
+
+.stack-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.stack-row {
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr) auto;
+  grid-template-areas:
+    "sw name share"
+    "sw bar  bar";
+  column-gap: 10px;
+  row-gap: 7px;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+.stack-row:hover, .stack-row.is-active { background: rgba(255, 255, 255, 0.045); }
+.stack-row[aria-pressed="true"] { background: rgba(255, 255, 255, 0.07); }
+.stack-swatch {
+  grid-area: sw;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--c);
+  transition: box-shadow 0.25s;
+}
+.stack-row.is-active .stack-swatch { box-shadow: 0 0 12px var(--c); }
+.stack-name { grid-area: name; font-weight: 600; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stack-sub { margin-left: 8px; color: var(--muted); font-weight: 400; font-size: 12.5px; }
+.stack-share {
+  grid-area: share;
+  min-width: 5ch;
+  text-align: right;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+.stack-bar {
+  grid-area: bar;
+  display: block;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+.stack-bar i {
+  display: block;
+  height: 100%;
+  width: 0; /* grows to --w once the panel is revealed */
+  border-radius: 0 3px 3px 0;
+  background: var(--c);
+  transition: width 1.2s var(--ease);
+}
+.reveal.in .stack-bar i { width: var(--w); }
+
+/* Without WebGL the ring is replaced by a thin segmented bar above the list. */
+.stack-strip { display: none; height: 8px; margin: 4px 10px 18px; border-radius: 999px; overflow: hidden; gap: 2px; }
+.stack-strip i { display: block; min-width: 2px; }
+body.no-webgl .stack-scene { display: none; }
+body.no-webgl .stack-body { grid-template-columns: 1fr; }
+body.no-webgl .stack-strip { display: flex; }
 
 /* ---------- About ---------- */
 .about {
@@ -495,6 +631,9 @@ h1 {
   .grid { grid-template-columns: 1fr 1fr; }
   .about { grid-template-columns: 1fr; }
   .activity { --cell: 11px; --gap: 3px; --days: 30px; padding: 20px; }
+  .stack-panel { padding: 20px; }
+  .stack-body { grid-template-columns: 1fr; gap: 20px; }
+  .stack-scene { max-width: 400px; }
 }
 @media (max-width: 600px) {
   .grid { grid-template-columns: 1fr; }
@@ -508,6 +647,6 @@ h1 {
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
   .dot, .scroll-hint span, .gradient-text { animation: none; }
-  .btn, .card, .card-link span, .activity-link span, .heatmap-cells .cell { transition: none; }
+  .btn, .card, .card-link span, .panel-link span, .heatmap-cells .cell, .stack-row, .stack-swatch, .stack-bar i { transition: none; }
 }
 body.no-webgl #scene { display: none; }

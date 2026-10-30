@@ -21,7 +21,8 @@ from their own repositories, which is why they live under `/hideit/` and
 from here.
 
 Below the apps, an Activity section shows my GitHub contribution calendar
-for the last year (see "The contribution calendar" below).
+for the last year, and a Stack section shows how much of my code is in
+each language, as a ring you can spin (see "The data branch" below).
 
 ## How it's built
 
@@ -30,29 +31,36 @@ Three files and no build step:
 - `index.html` holds the content. The app cards are plain `<article>` blocks
   in the `#apps` section; add, edit or remove them there.
 - `style.css` holds the layout and theme.
-- `main.js` draws the background scene with three.js, loaded as an ES module
-  from jsDelivr through the import map in `index.html`. Everything that is not
-  3D (nav, reveal-on-scroll, card glow, the contribution calendar) runs even
-  where WebGL is unavailable.
+- `main.js` draws the background scene and the Stack ring with three.js,
+  loaded as an ES module from jsDelivr through the import map in
+  `index.html`. Everything that is not 3D (nav, reveal-on-scroll, card glow,
+  the contribution calendar, the language list) runs even where WebGL is
+  unavailable; there the ring gives way to a thin segmented bar.
 
-### The contribution calendar
+### The data branch
 
 The Activity section draws `contributions.json`: a day per entry, with its
-count and GitHub's 0–4 level. The calendar is only available through
-GitHub's GraphQL API, which needs a token, so the browser can't fetch it
-from GitHub directly. Instead `.github/workflows/contributions.yml` runs
-`.github/scripts/contributions.sh` once a day (and on demand from the
-Actions tab) and commits the file to the `data` branch, which holds nothing
-else. The page reads it from
-`https://raw.githubusercontent.com/choonsiong/choonsiong.github.io/data/contributions.json`,
-so refreshing the calendar touches neither `main` nor the releases. If the
-file can't be loaded, the section shows a link to GitHub instead.
+count and GitHub's 0–4 level. The Stack section draws `languages.json`:
+bytes of source per language, as GitHub detects them, summed over every
+repository I own (forks excluded), with the number of repositories each
+appears in. Both are only available through GitHub's GraphQL API, which
+needs a token, so the browser can't fetch them from GitHub directly.
+Instead `.github/workflows/data.yml` runs `.github/scripts/contributions.sh`
+and `.github/scripts/languages.sh` once a day (and on demand from the
+Actions tab) and commits the files to the `data` branch, which holds
+nothing else. The page reads them from
+`https://raw.githubusercontent.com/choonsiong/choonsiong.github.io/data/`,
+so refreshing them touches neither `main` nor the releases. If a file can't
+be loaded, its section shows a link to GitHub instead.
 
-The workflow's own token is enough for a public profile; if GitHub refuses
-it, add a repository secret `CONTRIBUTIONS_TOKEN` with a fine-grained
-personal access token that has no permissions. To produce the file locally
-with `gh` and `jq` installed: `.github/scripts/contributions.sh choonsiong`
-(the output is git-ignored).
+The workflow's own token sees public repositories only. To count private
+ones as well, add a repository secret `DATA_TOKEN` holding a fine-grained
+personal access token with access to all repositories and just the
+Metadata permission (read, the minimum); the page publishes totals per
+language, never repository names. To produce the files locally with `gh`
+and `jq` installed: `.github/scripts/contributions.sh choonsiong` and
+`.github/scripts/languages.sh choonsiong` (both outputs are git-ignored,
+and the page served from localhost reads them before the published ones).
 
 `CNAME` sets the custom domain and `.nojekyll` stops GitHub Pages from
 running the files through Jekyll.
