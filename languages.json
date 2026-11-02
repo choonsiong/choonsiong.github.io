@@ -1,7 +1,7 @@
 {
   "login": "choonsiong",
-  "repos": 112,
-  "total": 42561678,
+  "repos": 113,
+  "total": 43015308,
   "languages": [
     {
       "name": "Java",
@@ -12,8 +12,8 @@
     {
       "name": "HTML",
       "color": "#e34c26",
-      "bytes": 6254309,
-      "repos": 46
+      "bytes": 6317875,
+      "repos": 47
     },
     {
       "name": "Go",
@@ -30,20 +30,20 @@
     {
       "name": "CSS",
       "color": "#663399",
-      "bytes": 2347422,
-      "repos": 35
+      "bytes": 2361772,
+      "repos": 36
     },
     {
       "name": "Vue",
       "color": "#41b883",
-      "bytes": 1979323,
+      "bytes": 2017987,
       "repos": 8
     },
     {
       "name": "TypeScript",
       "color": "#3178c6",
-      "bytes": 1633016,
-      "repos": 16
+      "bytes": 1908883,
+      "repos": 17
     },
     {
       "name": "Jinja",
@@ -60,8 +60,8 @@
     {
       "name": "JavaScript",
       "color": "#f1e05a",
-      "bytes": 1265791,
-      "repos": 34
+      "bytes": 1309133,
+      "repos": 36
     },
     {
       "name": "Go Template",
@@ -72,13 +72,13 @@
     {
       "name": "Shell",
       "color": "#89e051",
-      "bytes": 566742,
+      "bytes": 569258,
       "repos": 39
     },
     {
       "name": "PLpgSQL",
       "color": "#336790",
-      "bytes": 134900,
+      "bytes": 150225,
       "repos": 5
     },
     {
