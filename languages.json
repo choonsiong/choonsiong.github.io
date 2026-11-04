@@ -1,7 +1,7 @@
 {
   "login": "choonsiong",
   "repos": 113,
-  "total": 43211970,
+  "total": 43560147,
   "languages": [
     {
       "name": "Java",
@@ -12,13 +12,13 @@
     {
       "name": "HTML",
       "color": "#e34c26",
-      "bytes": 6317875,
+      "bytes": 6322441,
       "repos": 47
     },
     {
       "name": "Go",
       "color": "#00ADD8",
-      "bytes": 6075048,
+      "bytes": 6079987,
       "repos": 52
     },
     {
@@ -28,21 +28,21 @@
       "repos": 21
     },
     {
-      "name": "CSS",
-      "color": "#663399",
-      "bytes": 2362394,
-      "repos": 36
-    },
-    {
       "name": "TypeScript",
       "color": "#3178c6",
-      "bytes": 2104923,
+      "bytes": 2386833,
       "repos": 17
+    },
+    {
+      "name": "CSS",
+      "color": "#663399",
+      "bytes": 2367310,
+      "repos": 36
     },
     {
       "name": "Vue",
       "color": "#41b883",
-      "bytes": 2017987,
+      "bytes": 2062549,
       "repos": 8
     },
     {
@@ -60,8 +60,8 @@
     {
       "name": "JavaScript",
       "color": "#f1e05a",
-      "bytes": 1309133,
-      "repos": 36
+      "bytes": 1316417,
+      "repos": 38
     },
     {
       "name": "Go Template",
