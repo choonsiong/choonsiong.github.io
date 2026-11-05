@@ -1,7 +1,7 @@
 {
   "login": "choonsiong",
   "repos": 113,
-  "total": 43560147,
+  "total": 43641548,
   "languages": [
     {
       "name": "Java",
@@ -30,7 +30,7 @@
     {
       "name": "TypeScript",
       "color": "#3178c6",
-      "bytes": 2386833,
+      "bytes": 2468234,
       "repos": 17
     },
     {
