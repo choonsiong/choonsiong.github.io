@@ -1,7 +1,7 @@
 {
   "login": "choonsiong",
-  "repos": 113,
-  "total": 43641548,
+  "repos": 115,
+  "total": 43722383,
   "languages": [
     {
       "name": "Java",
@@ -12,8 +12,8 @@
     {
       "name": "HTML",
       "color": "#e34c26",
-      "bytes": 6322441,
-      "repos": 47
+      "bytes": 6403276,
+      "repos": 49
     },
     {
       "name": "Go",
