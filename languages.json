@@ -1,7 +1,7 @@
 {
   "login": "choonsiong",
   "repos": 115,
-  "total": 43722383,
+  "total": 43909966,
   "languages": [
     {
       "name": "Java",
@@ -18,7 +18,7 @@
     {
       "name": "Go",
       "color": "#00ADD8",
-      "bytes": 6079987,
+      "bytes": 6138746,
       "repos": 52
     },
     {
@@ -30,19 +30,19 @@
     {
       "name": "TypeScript",
       "color": "#3178c6",
-      "bytes": 2468234,
+      "bytes": 2534007,
       "repos": 17
     },
     {
       "name": "CSS",
       "color": "#663399",
-      "bytes": 2367310,
+      "bytes": 2367643,
       "repos": 36
     },
     {
       "name": "Vue",
       "color": "#41b883",
-      "bytes": 2062549,
+      "bytes": 2125267,
       "repos": 8
     },
     {
