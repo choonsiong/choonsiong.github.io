@@ -1,12 +1,12 @@
 {
   "login": "choonsiong",
-  "repos": 115,
-  "total": 43930608,
+  "repos": 116,
+  "total": 43963287,
   "languages": [
     {
       "name": "Java",
       "color": "#b07219",
-      "bytes": 15521536,
+      "bytes": 15521599,
       "repos": 20
     },
     {
@@ -18,14 +18,14 @@
     {
       "name": "Go",
       "color": "#00ADD8",
-      "bytes": 6144876,
+      "bytes": 6170280,
       "repos": 52
     },
     {
       "name": "Python",
       "color": "#3572A5",
-      "bytes": 2616891,
-      "repos": 21
+      "bytes": 2617746,
+      "repos": 22
     },
     {
       "name": "TypeScript",
@@ -42,7 +42,7 @@
     {
       "name": "Vue",
       "color": "#41b883",
-      "bytes": 2135066,
+      "bytes": 2139693,
       "repos": 8
     },
     {
@@ -60,8 +60,8 @@
     {
       "name": "JavaScript",
       "color": "#f1e05a",
-      "bytes": 1316417,
-      "repos": 38
+      "bytes": 1316940,
+      "repos": 39
     },
     {
       "name": "Go Template",
@@ -120,14 +120,14 @@
     {
       "name": "Dockerfile",
       "color": "#384d54",
-      "bytes": 48362,
-      "repos": 23
+      "bytes": 49232,
+      "repos": 24
     },
     {
       "name": "PHP",
       "color": "#4F5D95",
-      "bytes": 45546,
-      "repos": 4
+      "bytes": 45883,
+      "repos": 5
     },
     {
       "name": "C++",
