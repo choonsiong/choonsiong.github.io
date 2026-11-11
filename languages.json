@@ -1,7 +1,7 @@
 {
   "login": "choonsiong",
   "repos": 117,
-  "total": 43973809,
+  "total": 43973512,
   "languages": [
     {
       "name": "Java",
@@ -24,7 +24,7 @@
     {
       "name": "Python",
       "color": "#3572A5",
-      "bytes": 2617746,
+      "bytes": 2617733,
       "repos": 22
     },
     {
@@ -60,7 +60,7 @@
     {
       "name": "JavaScript",
       "color": "#f1e05a",
-      "bytes": 1316940,
+      "bytes": 1316924,
       "repos": 39
     },
     {
@@ -120,13 +120,13 @@
     {
       "name": "Dockerfile",
       "color": "#384d54",
-      "bytes": 49232,
+      "bytes": 48970,
       "repos": 24
     },
     {
       "name": "PHP",
       "color": "#4F5D95",
-      "bytes": 45883,
+      "bytes": 45877,
       "repos": 5
     },
     {
