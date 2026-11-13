@@ -1,7 +1,7 @@
 {
   "login": "choonsiong",
   "repos": 117,
-  "total": 43973512,
+  "total": 43977690,
   "languages": [
     {
       "name": "Java",
@@ -12,8 +12,8 @@
     {
       "name": "HTML",
       "color": "#e34c26",
-      "bytes": 6403276,
-      "repos": 49
+      "bytes": 6403576,
+      "repos": 50
     },
     {
       "name": "Go",
@@ -36,8 +36,8 @@
     {
       "name": "CSS",
       "color": "#663399",
-      "bytes": 2368896,
-      "repos": 36
+      "bytes": 2368976,
+      "repos": 37
     },
     {
       "name": "Vue",
@@ -112,16 +112,16 @@
       "repos": 1
     },
     {
+      "name": "Dockerfile",
+      "color": "#384d54",
+      "bytes": 52768,
+      "repos": 24
+    },
+    {
       "name": "Ruby",
       "color": "#701516",
       "bytes": 52341,
       "repos": 9
-    },
-    {
-      "name": "Dockerfile",
-      "color": "#384d54",
-      "bytes": 48970,
-      "repos": 24
     },
     {
       "name": "PHP",
