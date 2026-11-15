@@ -1,7 +1,7 @@
 {
   "login": "choonsiong",
   "repos": 117,
-  "total": 44015461,
+  "total": 44053378,
   "languages": [
     {
       "name": "Java",
@@ -18,7 +18,7 @@
     {
       "name": "Go",
       "color": "#00ADD8",
-      "bytes": 6187158,
+      "bytes": 6213365,
       "repos": 52
     },
     {
@@ -30,7 +30,7 @@
     {
       "name": "TypeScript",
       "color": "#3178c6",
-      "bytes": 2550950,
+      "bytes": 2552380,
       "repos": 17
     },
     {
@@ -42,7 +42,7 @@
     {
       "name": "Vue",
       "color": "#41b883",
-      "bytes": 2146900,
+      "bytes": 2155220,
       "repos": 8
     },
     {
@@ -78,7 +78,7 @@
     {
       "name": "PLpgSQL",
       "color": "#336790",
-      "bytes": 150225,
+      "bytes": 152185,
       "repos": 5
     },
     {
