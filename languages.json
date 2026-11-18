@@ -1,7 +1,7 @@
 {
   "login": "choonsiong",
   "repos": 117,
-  "total": 44102993,
+  "total": 44103146,
   "languages": [
     {
       "name": "Java",
@@ -42,7 +42,7 @@
     {
       "name": "Vue",
       "color": "#41b883",
-      "bytes": 2155220,
+      "bytes": 2155373,
       "repos": 8
     },
     {
