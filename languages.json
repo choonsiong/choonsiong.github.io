@@ -1,7 +1,7 @@
 {
   "login": "choonsiong",
   "repos": 117,
-  "total": 44322679,
+  "total": 44331499,
   "languages": [
     {
       "name": "Java",
@@ -54,7 +54,7 @@
     {
       "name": "Swift",
       "color": "#F05138",
-      "bytes": 1320010,
+      "bytes": 1328830,
       "repos": 6
     },
     {
