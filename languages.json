@@ -1,7 +1,7 @@
 {
   "login": "choonsiong",
   "repos": 117,
-  "total": 44331499,
+  "total": 44419410,
   "languages": [
     {
       "name": "Java",
@@ -10,16 +10,16 @@
       "repos": 21
     },
     {
+      "name": "Go",
+      "color": "#00ADD8",
+      "bytes": 6409719,
+      "repos": 52
+    },
+    {
       "name": "HTML",
       "color": "#e34c26",
       "bytes": 6403296,
       "repos": 50
-    },
-    {
-      "name": "Go",
-      "color": "#00ADD8",
-      "bytes": 6350201,
-      "repos": 52
     },
     {
       "name": "Python",
@@ -30,19 +30,19 @@
     {
       "name": "TypeScript",
       "color": "#3178c6",
-      "bytes": 2604872,
+      "bytes": 2608730,
       "repos": 17
     },
     {
       "name": "CSS",
       "color": "#663399",
-      "bytes": 2370116,
+      "bytes": 2370147,
       "repos": 37
     },
     {
       "name": "Vue",
       "color": "#41b883",
-      "bytes": 2178464,
+      "bytes": 2188795,
       "repos": 8
     },
     {
@@ -72,7 +72,7 @@
     {
       "name": "Shell",
       "color": "#89e051",
-      "bytes": 621932,
+      "bytes": 635378,
       "repos": 39
     },
     {
@@ -102,7 +102,7 @@
     {
       "name": "Makefile",
       "color": "#427819",
-      "bytes": 72930,
+      "bytes": 73657,
       "repos": 43
     },
     {
